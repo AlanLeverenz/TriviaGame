@@ -1,0 +1,50 @@
+.background {
+    /* background-image: url("../images/light-grey-terrazzo/"); */
+    background-color:rgb(253, 203, 128);
+    border-style: dotted;
+    border-width: 1px;
+    border-color: #778bfa;
+}
+
+body {
+    text-align: center;
+}
+
+#header {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+#time-message {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#time-number {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    color: blue;
+}
+
+ul {
+    padding-bottom: 20px;
+}
+
+ li:hover {
+    background-color:rgb(253, 221, 173);
+ }
+
+ #giphy {
+     padding-bottom: 20px;
+ }
+
+ #scores {
+     background-color: rgb(175, 76, 76);
+     padding: 1px 0;
+     margin: 5px auto 10px;
+     width: 300px;
+ }
+ 

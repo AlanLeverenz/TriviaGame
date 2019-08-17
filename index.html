@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trivia Game</title>
+
+        <!-- Google fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Amaranth|Roboto|Harmattan&display=swap" rel="stylesheet">
+
+    <!-- BOOTSTRAP AND FONT-AWESOME LINKS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- CSS STYLE LINK -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+
+<!-- Create container wrapper and insert background image -->
+
+<div class="container background" style="padding-top:30px;">
+
+    <!-- Insert game header -->
+
+    <div id="header">
+        <p id="header">Lion King Trivia Game</p>
+    </div>
+
+    <!-- Start button appears when page is loaded -->
+
+    <div id="start">
+        <button type="button" id="start" class="btn btn-info">Start</button>
+    </div>
+
+    <!-- Time section -->
+
+    <div id="time-section">
+        <p id="time-message"></p>
+        <p id="time-number"></p>
+    </div>
+
+    <!-- Set question div placeholder -->
+
+    <container id="wrapper">
+
+        <div id="question"></div>
+
+        <!-- Set answers div placeholder -->
+
+        <div id="answers">
+            <ul class="list-group list-group-flush" id="answer-list"></ul>
+        </div>
+
+        <!-- Set giphy container placeholder-->
+
+        <div id="giphy">
+            <img src="assets/images/animated_gif_014_sarabi_baby_simba.gif" width="300px">       
+        </div>
+        
+        <!-- set scores badgets after a game is won, lost, or timed-out -->
+        <div id="scores">
+            <div class="container" id="scores">
+                <div class="row">
+                    <div class="col">
+                        <img src="assets/images/thumb-up.png" width="32px"> <span id="wins" class="badge badge-light">0</span>
+                    </div>
+                    <div class="col">
+                        <img src="assets/images/thumb-down.png" width="32px"> <span id="losses" class="badge badge-light">0</span>
+                    </div>
+                    <div class="col">
+                        <img src="assets/images/alarm-clock.png" width="32px"> <span id="timeouts" class="badge badge-light">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </container> 
+</div>
+
+
+<!-- SCRIPT SOURCE FILES ========================================================== -->
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- JS source file -->
+<script type="text/javascript" src="assets/javascript/app.js"></script>
+
+
+</body>
+</html>
