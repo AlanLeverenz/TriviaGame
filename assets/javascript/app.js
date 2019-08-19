@@ -19,13 +19,6 @@ $(document).ready(function() {
         gif: "timon.webp" }
     ];
 
-
-    // PAGE LOAD INITIALIZE ===================================
-
-    $("#try-again").hide();
-    $("#summary-section").hide();
-    $("#scores").hide();
-
     // VARS ===================================================
 
     var countdown = 10;
@@ -94,7 +87,6 @@ $(document).ready(function() {
         } // end if
     }; // end decrement
 
-
     // display question answer set
     function showQuestion (i) {
         // empty current html question first
@@ -131,8 +123,21 @@ $(document).ready(function() {
             startCountdown }, 5000);
     } // end waitForIt
 
-    
-// PROGRAM STARTS HERE WITH ON CLICK EVENTS ========================================
+
+// PAGE LOAD INITIALIZE ===================================
+
+function startup () {
+    $("#try-again").hide();
+    $("#summary-section").hide();
+    $("#scores").hide();
+    $("#start").show();
+    $("#scores").hide();
+    $("#message-section").hide();
+}
+
+startup;
+
+// CLICK EVENTS ===========================================
 
     // start the game with Start button click event
     $("#start").on("click", startCountdown );
@@ -171,12 +176,12 @@ $(document).ready(function() {
             $("#correct").text(correct);
 
             // create a message and display it
+            $("#summary-message").show(1000);
             var message = "Yes! " + correctAnswer + " is correct!";
             $("#summary-message").html("<h5>" + message + "</h5>");
-            $("#summary-message").show();
 
             // wait 5 seconds before startCountDown function
-            waitForIt();
+            // waitForIt();
 
         } // end if
         
@@ -188,15 +193,19 @@ $(document).ready(function() {
             $("#wrong").text(wrong);
 
             // create a message and display it
+            $("#summary-message").show(1000);
             var message = "Sorry! The correct answer is " + correctAnswer + ".";
             $("#summary-message").html("<h5>" + message + "</h5>");
-            $("#summary-message").show();
 
             // wait 5 seconds before startCountDown function
-            waitForIt();
+            // waitForIt();
 
         } // end else
-    });
+    }); // end click on list item
+
+    // restart the game with Try Again button click event
+    $("#giphy").on("click", startCountdown() );
+
 
 }); // document ready end
 
