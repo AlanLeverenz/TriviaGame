@@ -29,6 +29,24 @@ body {
     color: blue;
 }
 
+#summary-message h5 {
+    color: blue;
+}
+
+#summary-section {
+    background-color: #f5a05a;
+    padding: 10px;
+    margin: 10px auto;
+    max-width: 300px;
+    width: 100%;
+}
+
+#qa-section {
+    max-width: 300px;
+    width: 100%;
+    margin: 1px auto;
+}
+
 ul {
     padding-bottom: 20px;
 }
