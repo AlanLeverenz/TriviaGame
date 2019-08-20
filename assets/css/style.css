@@ -34,7 +34,6 @@ body {
 }
 
 #summary-section {
-    /* background-color: #f5a05a; */
     padding: 10px;
     margin: 10px auto;
     max-width: 300px;
@@ -42,13 +41,13 @@ body {
 }
 
 #qa-section {
-    max-width: 300px;
+    max-width: 500px;
     width: 100%;
     margin: 1px auto;
 }
 
 ul {
-    padding-bottom: 20px;
+    padding: 10px;
 }
 
  li:hover {

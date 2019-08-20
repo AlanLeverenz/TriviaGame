@@ -21,7 +21,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
     <!-- JS source file -->
-    <!-- <script type="text/javascript" src="assets/javascript/app-test.js"></script> -->
+    <!-- <script type="text/javascript" src="assets/javascript/app.js"></script> -->
 </head>
 
 <body>
@@ -83,10 +83,6 @@
  <!-- SCRIPT ===================================================================================== -->
 <script>
 
-function hello() {
-    console.log("hello");
-}
-
 // $(document).ready(function() { ==== had to disable in order for button function to work 
 
         // VARIABLES ==========================================================
@@ -95,17 +91,17 @@ function hello() {
         { question : "Who was the voice of Sarabi in the Lion King 1994?",
         answers : ["Michelle Obama", "Willow Smith", "Gemma Collins","Alfre Woodard"],
         correct : "Michelle Obama",
-        gif: "animated_gif_014_sarabi_baby_simba.gif" },
+        gif: "assets/images/animated_gif_014_sarabi_baby_simba.gif" },
 
         { question: "Who was the voice of Rafiki in Lion King 2019?",
         answers : ["Rowan Atkinson", "John Kani", "Robert Guillaume", "Ernie Sabella"],
         correct : "John Kani",
-        gif: "animated_gif_038_rafiki_talking.gif" },
+        gif: "assets/images/animated_gif_038_rafiki_talking.gif" },
 
         { question : "Who was the voice of Timon in Lion King 1994?",
         answers : ["John Oliver", "Cheech Marin", "Nathan Lane","Jim Cummings"],
         correct : "Nathan Lane",
-        gif: "timon.webp" }
+        gif: "assets/images/timon.webp" }
     ];
     // VARS ===================================================
 
@@ -118,7 +114,7 @@ function hello() {
     var timeouts = 0;
     var start;
     var summaryMessageDiv = "<div id='summary-message'>";
-    var tryAgain = '<button type="button" id="try-again" onclick="tryAgain" class="btn btn-info">Try Again</button>';
+    var tryAgain = '<button type="button" id="try-again" onclick="tryAgain()" class="btn btn-info">Try Again</button>';
 
     // start countdown and show question ==========================
     function startCountdown() { 
@@ -135,6 +131,16 @@ function hello() {
     intervalId = setInterval(decrement, 1000);
     }; // end startCountdown
 
+    function tryAgain() {
+        countdown = 10;
+        intervalId = 0;
+        index = 0;
+        correct = 0;
+        wrong = 0;
+        timeouts = 0;
+        startCountdown();
+    }; // end tryAgain
+
     // decrement the stopwatch and show in html ====================
     function decrement() {
         countdown--;
@@ -147,11 +153,9 @@ function hello() {
             // increment the losses
             timeouts++;
             $("#timeout").text(timeouts);
-            console.log("index = " + index);
             if (index >= questions) {  // game is over
                 clearInterval(intervalId);
                 // show summary message
-                console.log("Finished questions");
                 showSummary();
             } else { // go to next question
                 startCountdown();
@@ -175,6 +179,9 @@ function hello() {
             var answerHTML = '<li class="list-group-item" id="answer" value="' + truth + '">' + answer + '</li>';
             $("#question").append(answerHTML);
         } // end for
+        // insert image
+        var image = "<img src=" + trivia.gif + " width='300px'>";
+        $("#giphy").html(image);
     } // end function
 
     // give a summary after the last question =========================
@@ -206,7 +213,7 @@ function hello() {
     // 5-second pause to read the answer result ======================
     function waitForIt() {
         setTimeout(function(){ 
-            startCountdown() }, 5000);
+            startCountdown() }, 4000);
     } // end waitForIt
 
     // ON CLICK EVENT =====================================================
@@ -216,14 +223,10 @@ function hello() {
 
         // capture selection and correct values
         var selection = $(this).text();
-        console.log("selection: " + selection);
         var correctAnswer = $(this).attr("value");
-        console.log("correct answer = " + correctAnswer);
 
         // stop the clock and hide time section
-        alert("intervalId: " + intervalId);
         clearInterval(intervalId);
-        alert("intervalId cleared: " + intervalId);
         $("#time-section").hide();
 
         // empty the question and answer-list sections
@@ -238,8 +241,6 @@ function hello() {
         
         // if there is a match -------------------------------
         if ( selection === correctAnswer ) {
-            alert("we have a match: " + selection + " = " + correctAnswer);
-
             // increment the correct counter and assign to html element
             correct++;
             $("#correct").text(correct);
@@ -247,15 +248,12 @@ function hello() {
             // create a message and display it
             var message = "Yes! " + correctAnswer + " is correct!";
             $("#summary-message").html("<h5>" + message + "</h5>");
-
-            // wait 5 seconds before startCountDown function
+            // wait 4 seconds before startCountDown function
             waitForIt();
 
         } // end if
         
         else {  // else must be a mismatch ---------------------------
-            alert("we have a mismatch: " + selection + " != " + correctAnswer);
-
             // increment the correct counter and assign to html element
             wrong++;
             $("#wrong").text(wrong);
@@ -264,9 +262,8 @@ function hello() {
             var message = "Sorry! The correct answer is " + correctAnswer + ".";
             $("#summary-message").html("<h5>" + message + "</h5>");
 
-            // wait 5 seconds before startCountDown function
+            // wait 4 seconds before startCountDown function
             waitForIt();
-
         } // end else
     }); // end click on list item
 
