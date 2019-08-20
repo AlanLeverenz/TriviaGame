@@ -114,7 +114,7 @@
     var timeouts = 0;
     var start;
     var summaryMessageDiv = "<div id='summary-message'>";
-    var tryAgain = '<button type="button" id="try-again" onclick="tryAgain()" class="btn btn-info">Try Again</button>';
+    var tryAgainHTML = '<button type="button" id="try-again" onclick="tryAgain()" class="btn btn-info">Try Again</button>';
 
     // start countdown and show question ==========================
     function startCountdown() { 
@@ -186,7 +186,7 @@
 
     // give a summary after the last question =========================
     function showSummary() {
-        $("#run").append(tryAgain);
+        $("#run").append(tryAgainHTML);
         $("#time-section").hide();
         $("#question").empty();
         $("#answer-list").empty();
