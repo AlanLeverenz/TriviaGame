@@ -16,6 +16,12 @@
 
     <!-- CSS STYLE LINK -->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <!-- JS source file -->
+    <!-- <script type="text/javascript" src="assets/javascript/app-test.js"></script> -->
 </head>
 
 <body>
@@ -30,8 +36,7 @@
 
     <!-- Start button appears when page is loaded -->
     <div id="run">
-        <button type="button" id="start" class="btn btn-info">Start</button>
-        <button type="button" id="try-again" class="btn btn-info">Try Again</button>
+        <button type="button" id="start" onclick="startCountdown()" class="btn btn-info">Start</button>
     </div>
 
     <!-- Time section -->
@@ -41,60 +46,242 @@
     </div>
 
     <!-- Set question div placeholder -->
-    <container id="wrapper">
-        <div id="qa-section">
-            <div id="question"></div>
-            <!-- Set answers div placeholder -->
-            <div id="answers">
-                <ul class="list-group list-group-flush" id="answer-list"></ul>
+    <div id="qa-section">
+        <div id="question"></div>
+        <!-- Set answers div placeholder -->
+        <div id="answers">
+            <ul class="list-group list-group-flush" id="answer-list"></ul>
+        </div>
+    </div> 
+
+    <!-- summary div -->
+    <div id="summary-section">
+        <div id="summary-message"></div>
+    </div>
+
+    <!-- Set giphy container placeholder-->
+    <div id="giphy">
+        <img src="assets/images/animated_gif_014_sarabi_baby_simba.gif" width="300px">
+    </div>
+    
+    <!-- set scores badgets after a game is won, lost, or timed-out -->
+    <div class="container" id="scores">
+        <div class="row">
+            <div class="col">
+                <img src="assets/images/thumb-up.png" width="32px"> <span id="correct" class="badge badge-light">0</span>
             </div>
-        </div> 
-
-        <!-- summary div -->
-        <div id="summary-section">
-            <div id="summary-message"></div>
-            <h6 id="total-correct"></h6>
-            <h6 id="total-wrong"></h6>
-            <h6 id="total-timeout"></h6>
-        </div>
-
-        <!-- Set giphy container placeholder-->
-        <div id="giphy">
-            <img src="assets/images/animated_gif_014_sarabi_baby_simba.gif" width="300px">       
-        </div>
-        
-        <!-- set scores badgets after a game is won, lost, or timed-out -->
-        <div id="scores">
-            <div class="container" id="scores">
-                <div class="row">
-                    <div class="col">
-                        <img src="assets/images/thumb-up.png" width="32px"> <span id="correct" class="badge badge-light">0</span>
-                    </div>
-                    <div class="col">
-                        <img src="assets/images/thumb-down.png" width="32px"> <span id="wrong" class="badge badge-light">0</span>
-                    </div>
-                    <div class="col">
-                        <img src="assets/images/alarm-clock.png" width="32px"> <span id="timeout" class="badge badge-light">0</span>
-                    </div>
-                </div> <!-- end row -->
-            </div> <!-- end scores container -->
-        </div> <!-- end scores div -->
-    </container> 
+            <div class="col">
+                <img src="assets/images/thumb-down.png" width="32px"> <span id="wrong" class="badge badge-light">0</span>
+            </div>
+            <div class="col">
+                <img src="assets/images/alarm-clock.png" width="32px"> <span id="timeout" class="badge badge-light">0</span>
+            </div>
+        </div> <!-- end row -->
+    </div> <!-- end scores container -->
 </div>
 
+ <!-- SCRIPT ===================================================================================== -->
+<script>
 
-<!-- SCRIPT SOURCE FILES ========================================================== -->
+function hello() {
+    console.log("hello");
+}
 
-<!-- jQuery CDN -->
+// $(document).ready(function() { ==== had to disable in order for button function to work 
+
+        // VARIABLES ==========================================================
+
+        var triviaQuizList = [ 
+        { question : "Who was the voice of Sarabi in the Lion King 1994?",
+        answers : ["Michelle Obama", "Willow Smith", "Gemma Collins","Alfre Woodard"],
+        correct : "Michelle Obama",
+        gif: "animated_gif_014_sarabi_baby_simba.gif" },
+
+        { question: "Who was the voice of Rafiki in Lion King 2019?",
+        answers : ["Rowan Atkinson", "John Kani", "Robert Guillaume", "Ernie Sabella"],
+        correct : "John Kani",
+        gif: "animated_gif_038_rafiki_talking.gif" },
+
+        { question : "Who was the voice of Timon in Lion King 1994?",
+        answers : ["John Oliver", "Cheech Marin", "Nathan Lane","Jim Cummings"],
+        correct : "Nathan Lane",
+        gif: "timon.webp" }
+    ];
+    // VARS ===================================================
+
+    var countdown = 10;
+    var intervalId = 0;
+    var index = 0;
+    var questions = triviaQuizList.length;
+    var correct = 0;
+    var wrong = 0;
+    var timeouts = 0;
+    var start;
+    var summaryMessageDiv = "<div id='summary-message'>";
+    var tryAgain = '<button type="button" id="try-again" onclick="tryAgain" class="btn btn-info">Try Again</button>';
+
+    // start countdown and show question ==========================
+    function startCountdown() { 
+    // hide/show elements
+    $("#run").empty();
+    $("#time-section").show();
+    $("#time-message").text("Time Remaining:");
+    $("#summary-section").empty();  // empty summary-section
+    // display a question and its answers
+    showQuestion(index);
+    // set countdown
+    countdown = 10;
+    // start decrementing the clock
+    intervalId = setInterval(decrement, 1000);
+    }; // end startCountdown
+
+    // decrement the stopwatch and show in html ====================
+    function decrement() {
+        countdown--;
+        $("#time-number").text(countdown);
+        // what to do when time is up
+        if (countdown === 0 ) { // if time runs out
+            clearInterval(intervalId);
+            // set index to next question
+            index++;
+            // increment the losses
+            timeouts++;
+            $("#timeout").text(timeouts);
+            console.log("index = " + index);
+            if (index >= questions) {  // game is over
+                clearInterval(intervalId);
+                // show summary message
+                console.log("Finished questions");
+                showSummary();
+            } else { // go to next question
+                startCountdown();
+            } // end if else
+        } // end if
+    }; // end decrement
+
+    // display question answer set =================================
+    function showQuestion (i) {
+        // empty current html question first
+        $("#question").empty();
+        var trivia = triviaQuizList[i];
+        var question = trivia.question;
+        $("#question").html("<h5>" + question + "</h5>");
+        // empty current html answer list first
+        $("#answer-list").empty();
+        // display all the answers
+        for ( var j = 0 ; j <= 3 ; j++ ) {
+            var answer = trivia.answers[j];
+            var truth = trivia.correct;
+            var answerHTML = '<li class="list-group-item" id="answer" value="' + truth + '">' + answer + '</li>';
+            $("#question").append(answerHTML);
+        } // end for
+    } // end function
+
+    // give a summary after the last question =========================
+    function showSummary() {
+        $("#run").append(tryAgain);
+        $("#time-section").hide();
+        $("#question").empty();
+        $("#answer-list").empty();
+        $("#summary-section").show();
+        // make summary message div
+        $("#summary-section").append(summaryMessageDiv);
+        // append message
+        var summaryMessage = "<h5>Here's how you did:</h5>";
+        $("#summary-section").append(summaryMessage);
+
+        // make html
+        var totalCorrect = "<h6 id='total-correct'>";
+        var totalWrong = "<h6 id='total-wrong'>";
+        var totalTimeout = "<h6 id='total-timeout'>";
+
+        // append html
+        $("#summary-section").append(totalCorrect).append(totalWrong).append(totalTimeout);
+        // insert text
+        $("#total-correct").text("Correct answers: " + correct);
+        $("#total-wrong").text("Wrong answers: " + wrong);
+        $("#total-timeout").text("Timeouts: " + timeouts);
+    } // end showSummary
+
+    // 5-second pause to read the answer result ======================
+    function waitForIt() {
+        setTimeout(function(){ 
+            startCountdown() }, 5000);
+    } // end waitForIt
+
+    // ON CLICK EVENT =====================================================
+
+    // compare item selected value to trivia array correct answer
+    $(document).on("click", "li", function () {
+
+        // capture selection and correct values
+        var selection = $(this).text();
+        console.log("selection: " + selection);
+        var correctAnswer = $(this).attr("value");
+        console.log("correct answer = " + correctAnswer);
+
+        // stop the clock and hide time section
+        alert("intervalId: " + intervalId);
+        clearInterval(intervalId);
+        alert("intervalId cleared: " + intervalId);
+        $("#time-section").hide();
+
+        // empty the question and answer-list sections
+        $("#question").empty();
+        $("#answer-list").empty();
+        // append the summary message div
+        $("#summary-section").append(summaryMessageDiv);
+        // append message
+        $("#summary-section").show();
+        // increment the question index
+        index++;
+        
+        // if there is a match -------------------------------
+        if ( selection === correctAnswer ) {
+            alert("we have a match: " + selection + " = " + correctAnswer);
+
+            // increment the correct counter and assign to html element
+            correct++;
+            $("#correct").text(correct);
+
+            // create a message and display it
+            var message = "Yes! " + correctAnswer + " is correct!";
+            $("#summary-message").html("<h5>" + message + "</h5>");
+
+            // wait 5 seconds before startCountDown function
+            waitForIt();
+
+        } // end if
+        
+        else {  // else must be a mismatch ---------------------------
+            alert("we have a mismatch: " + selection + " != " + correctAnswer);
+
+            // increment the correct counter and assign to html element
+            wrong++;
+            $("#wrong").text(wrong);
+
+            // create a message and display it
+            var message = "Sorry! The correct answer is " + correctAnswer + ".";
+            $("#summary-message").html("<h5>" + message + "</h5>");
+
+            // wait 5 seconds before startCountDown function
+            waitForIt();
+
+        } // end else
+    }); // end click on list item
+
+// }); // end document ready
+
+</script>
+
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-<!-- JS source file -->
-<script type="text/javascript" src="assets/javascript/app.js"></script>
-
+<!-- <script type="text/javascript" src="assets/javascript/app-test.js"></script> -->
 
 </body>
 </html>

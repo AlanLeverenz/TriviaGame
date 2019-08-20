@@ -18,7 +18,6 @@ $(document).ready(function() {
         correct : "Nathan Lane",
         gif: "timon.webp" }
     ];
-
     // VARS ===================================================
 
     var countdown = 10;
@@ -28,43 +27,26 @@ $(document).ready(function() {
     var correct = 0;
     var wrong = 0;
     var timeouts = 0;
+    var start;
+    var summaryMessageDiv = "<div id='summary-message'>";
+    var tryAgain = '<button type="button" id="try-again" onclick="tryAgain" class="btn btn-info">Try Again</button>';
 
-    // FUNCTIONS =============================================================
-
-    // start again, initialize, and call startCountDown from first question
-    function tryAgain () {
-        // initialize in case trying again
-        countdown = 10;
-        intervalId = 0;
-        index = 0;
-        questions = triviaQuizList.length;
-        correct = 0;
-        wrong = 0;
-        timeouts = 0;
-        $("#try-again").hide();
-        $("#time-section").show();
-        $("#summary-section").hide();
-        startCountdown();
-    } // end tryAgain
-
-    // start countdown and show question
+    // start countdown and show question ==========================
     function startCountdown() { 
-        // hide the start button
-        $("#start").hide();
-        $("#time-message").text("Time Remaining:");
-        $("#time-section").show();
-        $("#summary-section").hide();
-        $("#scores").show();
-        // display a question and its answers
-        showQuestion(index);
-        // set countdown
-        countdown = 10;
-        // setInterval returns a value every second
-        // start decrementing the clock
-        intervalId = setInterval(decrement, 1000);
-    }; // startCountdown
+    // hide/show elements
+    $("#run").empty();
+    $("#time-section").show();
+    $("#time-message").text("Time Remaining:");
+    $("#summary-section").empty();  // empty summary-section
+    // display a question and its answers
+    showQuestion(index);
+    // set countdown
+    countdown = 10;
+    // start decrementing the clock
+    intervalId = setInterval(decrement, 1000);
+    }; // end startCountdown
 
-    // decrement the stopwatch and show in html
+    // decrement the stopwatch and show in html ====================
     function decrement() {
         countdown--;
         $("#time-number").text(countdown);
@@ -80,6 +62,7 @@ $(document).ready(function() {
             if (index >= questions) {  // game is over
                 clearInterval(intervalId);
                 // show summary message
+                console.log("Finished questions");
                 showSummary();
             } else { // go to next question
                 startCountdown();
@@ -87,7 +70,7 @@ $(document).ready(function() {
         } // end if
     }; // end decrement
 
-    // display question answer set
+    // display question answer set =================================
     function showQuestion (i) {
         // empty current html question first
         $("#question").empty();
@@ -105,45 +88,39 @@ $(document).ready(function() {
         } // end for
     } // end function
 
-    // give a summary after the last question
+    // give a summary after the last question =========================
     function showSummary() {
-        $("#try-again").show();
+        $("#run").append(tryAgain);
         $("#time-section").hide();
         $("#question").empty();
         $("#answer-list").empty();
         $("#summary-section").show();
-        $("#summary-message").html("<h5>Here's how you did</h5>");
+        // make summary message div
+        $("#summary-section").append(summaryMessageDiv);
+        // append message
+        var summaryMessage = "<h5>Here's how you did:</h5>";
+        $("#summary-section").append(summaryMessage);
+
+        // make html
+        var totalCorrect = "<h6 id='total-correct'>";
+        var totalWrong = "<h6 id='total-wrong'>";
+        var totalTimeout = "<h6 id='total-timeout'>";
+
+        // append html
+        $("#summary-section").append(totalCorrect).append(totalWrong).append(totalTimeout);
+        // insert text
         $("#total-correct").text("Correct answers: " + correct);
         $("#total-wrong").text("Wrong answers: " + wrong);
         $("#total-timeout").text("Timeouts: " + timeouts);
     } // end showSummary
 
+    // 5-second pause to read the answer result ======================
     function waitForIt() {
         setTimeout(function(){ 
-            startCountdown }, 5000);
+            startCountdown() }, 5000);
     } // end waitForIt
 
-
-// PAGE LOAD INITIALIZE ===================================
-
-function startup () {
-    $("#try-again").hide();
-    $("#summary-section").hide();
-    $("#scores").hide();
-    $("#start").show();
-    $("#scores").hide();
-    $("#message-section").hide();
-}
-
-startup;
-
-// CLICK EVENTS ===========================================
-
-    // start the game with Start button click event
-    $("#start").on("click", startCountdown );
-
-    // restart the game with Try Again button click event
-    $("#try-again").on("click", tryAgain );
+    // ON CLICK EVENT =====================================================
 
     // compare item selected value to trivia array correct answer
     $(document).on("click", "li", function () {
@@ -163,7 +140,10 @@ startup;
         // empty the question and answer-list sections
         $("#question").empty();
         $("#answer-list").empty();
-        
+        // append the summary message div
+        $("#summary-section").append(summaryMessageDiv);
+        // append message
+        $("#summary-section").show();
         // increment the question index
         index++;
         
@@ -176,12 +156,11 @@ startup;
             $("#correct").text(correct);
 
             // create a message and display it
-            $("#summary-message").show(1000);
             var message = "Yes! " + correctAnswer + " is correct!";
             $("#summary-message").html("<h5>" + message + "</h5>");
 
             // wait 5 seconds before startCountDown function
-            // waitForIt();
+            waitForIt();
 
         } // end if
         
@@ -193,19 +172,14 @@ startup;
             $("#wrong").text(wrong);
 
             // create a message and display it
-            $("#summary-message").show(1000);
             var message = "Sorry! The correct answer is " + correctAnswer + ".";
             $("#summary-message").html("<h5>" + message + "</h5>");
 
             // wait 5 seconds before startCountDown function
-            // waitForIt();
+            waitForIt();
 
         } // end else
     }); // end click on list item
-
-    // restart the game with Try Again button click event
-    $("#giphy").on("click", startCountdown() );
-
 
 }); // document ready end
 
