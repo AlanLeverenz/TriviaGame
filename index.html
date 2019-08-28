@@ -157,7 +157,7 @@
         // test if game is over, if true show summary
         if (index >= questions) {  
             clearInterval(intervalId);
-            // show summary message
+            // show summary message after clearing
             $("#summary-section").empty();
             showSummary();
         } else {
@@ -215,7 +215,7 @@
             // append message
             $("#summary-message").html("<h5>" + timeoutAlert + "</h5>");
             $("#summary-message").show();
-            // show the gif assigned in the question function
+            // fade in the gif assigned in the question function
             $("#giphy").fadeIn(2000);
 
             // set index to next question
@@ -327,7 +327,7 @@
             } // end if
             
             else {  // else must be a mismatch ---------------------------
-                // increment the correct counter and assign to html element
+                // increment the wrong counter and assign to html element
                 wrong++;
                 $("#wrong").text(wrong);
 
